@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="buildAblTest" name="buildAblTest">
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <property name="lib.dir" value="libs" />
+    <property name="bin.dir" value="bin" />
+	<property name="src.dir" value="src" />
+	<property name="compiledAbl.dir" value="${src.dir}/compiledAbl" />
+	
+	<path id="lib.classpath">
+		<fileset dir="${lib.dir}" includes="*.jar" />
+	</path>
+	
+	<path id="simpleABL.classpath">
+        <pathelement location="bin"/>
+        <path refid="lib.classpath"/>
+    </path>
+	
+	<target name="clean">
+        <delete dir="${bin.dir}"/>
+    </target>
+	
+	<target name="init">
+        <mkdir dir="${bin.dir}"/>
+        <copy includeemptydirs="false" todir="${bin.dir}">
+            <fileset dir="${src.dir}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>	
+	
+	<macrodef name="abl.compile">
+		<attribute name="path" />
+		<sequential>
+			<java classname="abl.compiler.Abl">
+				<classpath refid="simpleABL.classpath"/>
+				<!-- add a "-g2" arg for Michael's official debugging -->
+				<!--<arg value="-g2" /> -->
+				<!-- add a "-visDependency arg for April's generated vis -->
+				<!--<arg value="-visDependency" /> -->
+				<!-- add a "-visDependency arg for Ben's real-time ABT vis -->
+				<!--<arg value="-visABT" />-->
+				<arg value="-metaEnabled" />
+				<arg value="-d" />
+				<arg value="src" />
+				<arg value="@{path}" />
+			</java>
+		</sequential>
+	</macrodef>
+	
+	<target name="subBuild">
+  		 <abl.compile path="src/TestEntity.abl"/>
+	</target>
+	
+	
+	<!-- init makes the bin dir and connects it to the src dir -->
+	<!-- is it smart that they use the same bin dir? -->
+	<target name="buildProject">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="lib.classpath"/>
+        </javac>
+    </target>
+	
+	<target name="runAgent">
+        <java classname="runner.Runner" failonerror="true" fork="yes">
+            <arg line="compiledAbl.TestEntity"/>
+            <classpath refid="simpleABL.classpath"/>
+        </java>
+    </target>
+
+	<target name="buildAblTest" depends="clean,init,subBuild,buildProject"/> 	
+	<target name="buildAndRunAblTest" depends="clean,init,subBuild,buildProject,runAgent"/> 	
+	              	
+</project>

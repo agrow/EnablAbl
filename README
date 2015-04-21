@@ -1,0 +1,20 @@
+AblTest is a simple agent to test a previously compiled abl.jar
+
+BEFORE RUNNING
+	In build.xml:
+		Edit line 8 to point to your eclipse directory
+			example for most windows users: <property name="ECLIPSE_HOME" value= "C:\Program Files (x86)\eclipse"/>
+			
+TO RUN
+	The [Default] build is buildAblTest, which builds the TestEntity.abl agent and its Runner.
+	buildAndRunAblTest does the buildAblTest and then immediately runs the agent
+	Some of the build commands (those that reference the src directory) are kept for reference,
+		as it looks like they were previously part of the head ABL directory.
+	
+	
+BEWARE
+	TestEntity.abl is hard-coded into the build.xml. Don't try to rename/remove it without renaming it there:
+		<abl.compile path="src/TestEntity.abl"/>
+	Runner.java is hard-coded into the build.xml. Don't try to rename/remove it without renaming it there:
+		<java classname="runner.Runner" failonerror="true" fork="yes">
+		

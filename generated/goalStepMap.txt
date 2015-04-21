@@ -1,0 +1,7 @@
+0
+1|testEntityWMETest_boop()|testEntityWMETest_boop()|testEntityWMETest_boop()
+2
+3
+4
+5|testEntityWMETest()
+6

@@ -1,0 +1,65 @@
+package compiledAbl;
+
+import java.lang.*;
+
+import wm.WME;
+import wm.ScorableWME;
+
+import wm.WorkingMemory;
+import abl.runtime.Rulegroup;
+import abl.runtime.Rule;
+import javaPackage.*;
+
+
+behaving_entity TestEntity {
+	
+	/************** "global" variables for ABL agent ***************/
+	String s = "Hello World";
+	
+	/************** Put subgoaled behaviors below ***************/
+    sequential behavior testEntityWMETest(){
+    	TestWME testWME;
+    	mental_act {
+            System.out.println(" from WMETest");
+            testWME = new TestWME(666, "boop");
+            __$thisEntity.addWME(testWME);
+        }
+    	
+    	parallel {						
+    		subgoal testEntityWMETest_boop();
+    		subgoal testEntityWMETest_boop();
+    		subgoal testEntityWMETest_boop();
+		}
+    	
+    }
+    
+    sequential behavior testEntityWMETest_boop(){
+    	precondition{	myTestWME = (TestWME)
+    					(myTestWME.getS().equals("boop"))
+    				}
+    	mental_act {
+            System.out.println("  BOOPED YOU!!!!!");
+        }
+    	
+    }
+    
+    sequential behavior testEntityWMETest_boop(){
+    	mental_act {
+            System.out.println("  Booped You...?");
+        }
+    	
+    }
+
+	/************** Agent must have an initial tree! And it must go at the end! ***************/
+    initial_tree {
+         mental_act {
+              System.out.println(s);
+         }
+         
+         sequential {
+        	 subgoal testEntityWMETest();
+         }
+    }
+    
+    
+}

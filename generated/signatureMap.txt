@@ -1,0 +1,7 @@
+0|testEntityWMETest()
+1|testEntityWMETest-0->AnonymousStep1()
+2|testEntityWMETest_boop()
+3|testEntityWMETest_boop()
+4|TestEntity_RootCollectionBehavior()
+5|TestEntity_RootCollectionBehavior-4->AnonymousStep8()
+6|__$defaultMemoryExecuteBehavior()
